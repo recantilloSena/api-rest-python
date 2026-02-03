@@ -4,6 +4,8 @@
 
 - Instalar git localmente
 - Instalar Visual Studio Code Localmente
+# Instalar las dependencias REQUERIDAS 
+- pip install "fastapi[standard]"
 
 
 # 1. crear el REPO
