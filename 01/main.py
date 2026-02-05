@@ -17,3 +17,7 @@ def read_root():
 @app.get("/sumar/{a}/{b}")
 def sumar_service(a: int, b: int):
     return {"suma":  a + b}
+
+@app.get("/restar/{a}/{b}")
+def restar_service(a: int, b: int):
+    return {"resta": a - b}
