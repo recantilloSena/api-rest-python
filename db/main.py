@@ -1,8 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import asyncpg
 import os
+from pydantic import BaseModel, EmailStr
 
 app = FastAPI()
+
+class AprendizCreate(BaseModel):
+    nombre: str
+    correo: EmailStr
+    edad: int
 
 DB_CONFIG = {
     "host": os.getenv("SENA_HOST"),  
@@ -27,7 +33,8 @@ async def startup():
         password=DB_CONFIG["password"],
         ssl=DB_CONFIG["ssl"],
         min_size=1,
-        max_size=5
+        max_size=5,
+        statement_cache_size =0
     )
 
 
@@ -46,3 +53,29 @@ async def get_aprendices():
 
         # asyncpg devuelve Record → convertir a dict
         return [dict(row) for row in rows]
+
+
+@app.get("/aprendices/{id}")
+async def get_apendiz_by_id(id: int):
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow("""
+            SELECT id, nombre, correo, edad
+            FROM public.adso_nocturno
+            WHERE id = $1;
+        """, id)
+
+        if not row:
+            raise HTTPException(status_code=404, detail="Aprendiz no encontrado")
+
+        return dict(row)
+    
+@app.post("/aprendices", status_code=201)
+async def create_aprendiz(aprendiz: AprendizCreate):
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow("""
+            INSERT INTO public.adso_nocturno (nombre, correo, edad)
+            VALUES ($1, $2, $3)
+            RETURNING id, nombre, correo, edad;
+        """, aprendiz.nombre, aprendiz.correo, aprendiz.edad)
+
+        return dict(row)    
