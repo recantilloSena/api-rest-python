@@ -1,10 +1,11 @@
 from pydantic import EmailStr
-from database import pool,Router
 from fastapi import HTTPException
+import database as db
+from database import Router
 
 @Router.put("/aprendices/{id}")
 async def update_all_aprendiz(id: int, new_name: str, new_email: EmailStr, new_age: int):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         full_update = await conn.fetchrow(
             """
             UPDATE public.adso_nocturno
@@ -25,7 +26,7 @@ async def update_all_aprendiz(id: int, new_name: str, new_email: EmailStr, new_a
 
 @Router.patch("/aprendices_name/{id}")
 async def update_aprendiz_name(id: int, new_name: str):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         name_update = await conn.fetchrow(
             """
             UPDATE public.adso_nocturno
@@ -42,7 +43,7 @@ async def update_aprendiz_name(id: int, new_name: str):
 ################################################
 @Router.patch("/aprendices_email/{id}")
 async def update_aprendiz_email(id: int, new_email: EmailStr):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         email_update = await conn.fetchrow(
             """
             UPDATE public.adso_nocturno
@@ -59,7 +60,7 @@ async def update_aprendiz_email(id: int, new_email: EmailStr):
 
 @Router.patch("/aprendices_age/{id}")
 async def update_aprendiz_age(id: int, new_age: int):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         email_update = await conn.fetchrow(
             """
             UPDATE public.adso_nocturno

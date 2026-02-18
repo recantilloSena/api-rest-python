@@ -35,4 +35,7 @@ async def startup():
 
 
 async def shutdown():
-    await pool.close()
+    global pool
+    if pool:
+        await pool.close()
+

@@ -1,11 +1,12 @@
-from database import pool,Router
 from fastapi import HTTPException
+import database as db
+from database import Router
 
 
 
 @Router.get("/aprendices")
 async def get_aprendices():
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         rows = await conn.fetch("""
             SELECT id, nombre, correo, edad
             FROM public.adso_nocturno;
@@ -17,7 +18,7 @@ async def get_aprendices():
 
 @Router.get("/aprendices/{id}")
 async def get_apendiz_by_id(id: int):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         row = await conn.fetchrow("""
             SELECT id, nombre, correo, edad
             FROM public.adso_nocturno

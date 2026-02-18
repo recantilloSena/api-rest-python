@@ -1,11 +1,12 @@
 from fastapi import HTTPException
-from database import pool,Router
+import database as db
+from database import Router
 
 
 
 @Router.delete("/aprendices/{id}", status_code=204)
 async def delete_aprendiz(id: int):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         deletion = await conn.execute(
             """
             DELETE FROM public.adso_nocturno WHERE id = $1; 

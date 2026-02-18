@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
-from database import pool,Router
+import database as db
+from database import Router
 
 
 class AprendizCreate(BaseModel):
@@ -9,7 +10,7 @@ class AprendizCreate(BaseModel):
 
 @Router.post("/aprendices", status_code=201)
 async def create_aprendiz(aprendiz: AprendizCreate):
-    async with pool.acquire() as conn:
+    async with db.pool.acquire() as conn:
         row = await conn.fetchrow(
             """
             INSERT INTO public.adso_nocturno (nombre, correo, edad)
