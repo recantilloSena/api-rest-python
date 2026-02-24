@@ -8,8 +8,8 @@ from database import Router
 async def get_aprendices():
     async with db.pool.acquire() as conn:
         rows = await conn.fetch("""
-            SELECT id, nombre, correo, edad
-            FROM public.adso_nocturno;
+            SELECT id, nombres, edad
+            FROM public.aprendices;
         """)
 
         # asyncpg devuelve Record → convertir a dict
@@ -20,8 +20,8 @@ async def get_aprendices():
 async def get_apendiz_by_id(id: int):
     async with db.pool.acquire() as conn:
         row = await conn.fetchrow("""
-            SELECT id, nombre, correo, edad
-            FROM public.adso_nocturno
+            SELECT id, nombres, edad
+            FROM public.aprendices
             WHERE id = $1;
         """, id)
 

@@ -9,7 +9,7 @@ async def delete_aprendiz(id: int):
     async with db.pool.acquire() as conn:
         deletion = await conn.execute(
             """
-            DELETE FROM public.adso_nocturno WHERE id = $1; 
+            DELETE FROM public.aprendices WHERE id = $1; 
             """, id)
         
         if deletion == "DELETE 0":

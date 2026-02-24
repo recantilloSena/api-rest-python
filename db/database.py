@@ -2,8 +2,8 @@ import asyncpg
 from fastapi import APIRouter
 
 SENA_HOST = "aws-0-us-west-2.pooler.supabase.com"
-SENA_USER = "postgres.vcfbzwteaodlznqppqyq"
-SENA_PWD = "DWzaWsmg7dxSxMKy"
+SENA_USER = "postgres.wtyndmmkeasqydxmfuia"
+SENA_PWD = "ADSO-trece-development-DATABASE"
 Router = APIRouter()
 
 
